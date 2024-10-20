@@ -1,11 +1,22 @@
 import React from "react";
 import { GiExitDoor } from "react-icons/gi";
+import useLogout from "../../hooks/useLogout";
 
 const LogoutButton = () => {
+  const { loading, logout } = useLogout();
   return (
     <div className="mt-auto flex flex-row">
-      <GiExitDoor className="w-5 h-5 text-white cursor-pointer" />
-      <p className="font-bold ml-1">Exit</p>
+      {!loading ? (
+        <button
+          onClick={logout}
+          className="flex items-center justify-center px-3 py-1.5 bg-blue-400 hover:bg-blue-600 text-white rounded-md shadow-sm transition-all duration-300 ease-in-out"
+        >
+          <GiExitDoor className="w-4 h-4 mr-1" />
+          <span className="font-semibold text-sm">Logout</span>
+        </button>
+      ) : (
+        <span className="loading loading-spinner"></span>
+      )}
     </div>
   );
 };
