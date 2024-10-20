@@ -1,5 +1,7 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+import { getRecieverSocketId } from "../socket/socket.js";
+import { io } from "../socket/socket.js";
 
 export const sendMessages = async (req, res) => {
   try {
@@ -27,13 +29,19 @@ export const sendMessages = async (req, res) => {
       conversation.messages.push(newMessage._id);
     }
 
-    //SOCKET IO functionality will go here
-
     //  this two will run one by one , so we can user Promise.all to execute akl in parallel
     // await conversation.save();
     // await newMessage.save();
 
     await Promise.all([conversation.save(), newMessage.save()]);
+
+    //SOCKET IO functionality will go here
+    const receiverSocketId = getRecieverSocketId(recieverId);
+
+    if (receiverSocketId) {
+      // io.to(<socket.id>).emit() used to send event to particular client
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {
