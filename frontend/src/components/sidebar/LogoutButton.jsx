@@ -5,7 +5,7 @@ import useLogout from "../../hooks/useLogout";
 const LogoutButton = () => {
   const { loading, logout } = useLogout();
   return (
-    <div className="mt-auto flex flex-row">
+    <div className="mt-auto absolute bottom-1 left-4 flex flex-row">
       {!loading ? (
         <button
           onClick={logout}
