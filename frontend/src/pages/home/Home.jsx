@@ -9,7 +9,7 @@ const Home = () => {
   const isSelected = selectedConversation ? true : false;
   return (
     <div
-      className="flex flex-col sm:flex-row h-[90vh] rounded-lg overflow-hidden bg-gray-400 bg-clip-padding
+      className="flex flex-col relative sm:flex-row h-[90vh] rounded-lg overflow-hidden bg-gray-400 bg-clip-padding
   backdrop-filter backdrop-blur-lg bg-opacity-0"
     >
       <div className={`w-full ${isSelected ? "hidden sm:block" : "block"}`}>

@@ -28,7 +28,7 @@ const MessageInput = () => {
           {loading ? (
             <span className="loading loading-spinner mx-auto"></span>
           ) : (
-            <BsSend />
+            <BsSend className="text-[#81C784]" />
           )}
         </button>
       </div>

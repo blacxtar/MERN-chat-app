@@ -12,7 +12,7 @@ const Message = ({ message }) => {
   const profilePic = fromMe
     ? authUser.profilePic
     : selectedConversation?.profilePic;
-  const bubbleBgColor = fromMe ? "bg-blue-500" : "bg-gray-500";
+  const bubbleBgColor = fromMe ? "bg-[#2E7D32]" : "#90A4AE";
   const headerName = fromMe ? "You" : selectedConversation.fullName;
   const shakeClass = message.shouldShake ? "shake" : "";
   return (
@@ -22,7 +22,7 @@ const Message = ({ message }) => {
           <img src={profilePic} />
         </div>
       </div>
-      <div className="chat-header flex justify-between items-center">
+      <div className="chat-header text-[#D3CBB8] flex justify-between items-center">
         <span>{headerName}</span>
         <time className="text-xs opacity-50 ml-2">{formattedTime}</time>
       </div>

@@ -91,7 +91,7 @@ const SignUp = () => {
           />
           <Link
             to="/login"
-            className="text-sm hover:underline hover:text-blue-500 mt-1 inline-block"
+            className="text-sm text-[#FFD54F] hover:underline hover:text-blue-500 mt-1 inline-block"
           >
             Already have a account?
           </Link>

@@ -5,10 +5,13 @@ import { TiMessages } from "react-icons/ti";
 import useConversation from "../../zustand-store/useConversation";
 import { useAuthContext } from "../../context/AuthContext";
 import { MdArrowBack } from "react-icons/md";
+import { useSocketContext } from "../../context/SocketContext";
 
 const MessageContainer = () => {
   const { selectedConversation, setSelectedConversation } = useConversation();
   // reset selectedConversation when we logOut that is when this component unMounts(no longer in the view of browser)
+  const { onlineUsers } = useSocketContext();
+  const isOnline = onlineUsers.includes(selectedConversation?._id);
 
   useEffect(() => {
     // clean up function(unMount)
@@ -26,7 +29,7 @@ const MessageContainer = () => {
             <button onClick={() => setSelectedConversation(null)}>
               <MdArrowBack />
             </button>
-            <div className="chat-image avatar">
+            <div className={`chat-image avatar ${isOnline ? "online" : ""}`}>
               <div className="w-10 rounded-full">
                 <img src={selectedConversation.profilePic} />
               </div>
