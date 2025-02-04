@@ -18,6 +18,7 @@ const __dirname = path.resolve();
 
 app.use(cookieParser());
 app.use(express.json());
+
 //middleware for auth route
 app.use("/api/auth", authRoutes);
 

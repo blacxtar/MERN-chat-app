@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import { BsSend } from "react-icons/bs";
 import useSendMessages from "../../hooks/useSendMessages";
+import { useSocketContext } from "../../context/SocketContext";
+import useConversation from "../../zustand-store/useConversation";
+import { useAuthContext } from "../../context/AuthContext";
 
 const MessageInput = () => {
   const [message, setMessage] = useState("");
   const { loading, sendMessage } = useSendMessages();
+  const { socket } = useSocketContext();
+  const { selectedConversation } = useConversation();
+  const { authUser } = useAuthContext();
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!message) return;
@@ -20,6 +26,20 @@ const MessageInput = () => {
           placeholder="Type a message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyUp={() => {
+            socket.emit("typing", {
+              typing: true,
+              receiver: selectedConversation._id,
+              sender: authUser._id,
+            });
+          }}
+          onBlur={() => {
+            socket.emit("stopTyping", {
+              typing: false,
+              receiver: selectedConversation._id,
+              sender: authUser._id,
+            });
+          }}
         />
         <button
           type="submit"

@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useConversation from "../../zustand-store/useConversation";
 import { useSocketContext } from "../../context/SocketContext";
+import TypingIndicator from "../messages/TypingIndicator";
 
 const Conversation = ({ conversation, emoji, lastIdx }) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
   const isSelected = selectedConversation?._id === conversation._id;
-  const { onlineUsers } = useSocketContext();
+  const { socket, onlineUsers } = useSocketContext();
   const isOnline = onlineUsers.includes(conversation._id);
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("typing", (data) => {
+      const { typing, sender } = data;
+      if (conversation._id === sender) {
+        setIsTyping(typing);
+      }
+    });
+    socket.on("stopTyping", (data) => {
+      const { typing, sender } = data;
+      if (conversation._id === sender) {
+        setIsTyping(typing);
+      }
+    });
+  }, [socket, conversation._id]);
   return (
     <>
       <div
@@ -21,7 +40,10 @@ const Conversation = ({ conversation, emoji, lastIdx }) => {
         </div>
         <div className="flex flex-col flex-1">
           <div className="flex gap-3 justify-between">
-            <p className="font-bold text-gray-200">{conversation.fullName}</p>
+            <div className="flex flex-col -mt-1">
+              <p className="font-bold text-gray-200">{conversation.fullName}</p>
+              {isTyping && <TypingIndicator />}
+            </div>
             <span className="text-xl">{emoji}</span>
           </div>
         </div>
